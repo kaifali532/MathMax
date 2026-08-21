@@ -1,6 +1,6 @@
 {
-  "name": "",
-  "description": "",
+  "name": "MathStudio",
+  "description": "Student Mathematics Calculator and Problem Solver",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
