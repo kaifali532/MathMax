@@ -165,7 +165,7 @@ export const AnglesTrig: React.FC = () => {
           </div>
           
           <div className="flex gap-2 pt-2">
-            <Button className="flex-1 shadow-md shadow-indigo-200 dark:shadow-none" onClick={handleSolve}>Solve Triangle</Button>
+            <Button variant="neon" className="flex-1" onClick={handleSolve}>Solve Triangle</Button>
             <Button variant="secondary" onClick={() => { setSides({a:'',b:'',c:''}); setAngles({A:'',B:''}); setSolution(null); setError(''); }}>Clear</Button>
           </div>
           

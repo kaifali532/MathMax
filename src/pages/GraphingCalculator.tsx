@@ -130,7 +130,7 @@ export const GraphingCalculator: React.FC = () => {
                   placeholder="x^2 - 4"
                   onKeyDown={(e) => e.key === 'Enter' && handleAdd()}
                 />
-                <Button onClick={handleAdd}>Add to Graph</Button>
+                <Button onClick={handleAdd} variant="neon">Add to Graph</Button>
               </div>
               {error && <div className="text-red-500 text-xs font-medium mt-2">{error}</div>}
             </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, Button, Input } from '../components/ui';
+import { Card, Button, Input, CopyButton } from '../components/ui';
 import { MathDisplay } from '../components/MathDisplay';
 import { useAppContext } from '../context/AppContext';
 
@@ -91,7 +91,7 @@ export const QuadraticSolver: React.FC = () => {
         </div>
         
         <div className="pt-2">
-          <Button onClick={handleSolve} className="py-4 px-8 rounded-xl shadow-md shadow-indigo-200 dark:shadow-none">Solve Quadratic</Button>
+          <Button onClick={handleSolve} variant="neon" className="py-4 px-8 rounded-xl">Solve Quadratic</Button>
         </div>
         
         {error && <div className="text-red-500 text-sm font-medium bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
@@ -108,7 +108,10 @@ export const QuadraticSolver: React.FC = () => {
                   <div className="text-sm text-gray-500 mt-1">{solution.dText}</div>
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-2">Result</h3>
+                  <div className="flex items-center justify-between mb-2">
+                    <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Result</h3>
+                    <CopyButton variant="ghost" className="text-indigo-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.result} />
+                  </div>
                   <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 font-mono">
                     {solution.result}
                   </div>

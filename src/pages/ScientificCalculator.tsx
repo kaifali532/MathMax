@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card, Button } from '../components/ui';
+import { Card, Button, CopyButton } from '../components/ui';
 import * as math from 'mathjs';
 import { useAppContext } from '../context/AppContext';
-import { Copy, Delete } from 'lucide-react';
+import { Delete } from 'lucide-react';
 
 export const ScientificCalculator: React.FC = () => {
   const [expression, setExpression] = useState('');
@@ -29,6 +29,9 @@ export const ScientificCalculator: React.FC = () => {
       const res = math.evaluate(evalExpr);
       
       if (res === undefined || typeof res === 'function') return '';
+      if (res === Infinity || res === -Infinity || Number.isNaN(Number(res))) {
+        throw new Error('Division by zero is not allowed.');
+      }
       
       // Format to avoid long decimals
       return math.format(res, { precision: 14 });
@@ -50,9 +53,13 @@ export const ScientificCalculator: React.FC = () => {
           module: 'calculator'
         });
       }
-    } catch (err) {
+    } catch (err: any) {
       setError(true);
-      setResult('Invalid expression');
+      if (err.message && err.message.includes('Division by zero')) {
+        setResult('Undefined: Division by zero');
+      } else {
+        setResult('Invalid expression');
+      }
     }
   }, [expression, isRad, evaluateExpression, addToHistory]);
 
@@ -136,7 +143,7 @@ export const ScientificCalculator: React.FC = () => {
     { label: '0', action: () => handleInput('0'), variant: 'secondary' as const, className: 'col-span-2' },
     { label: '.', action: () => handleInput('.'), variant: 'secondary' as const },
     { label: '+', action: () => handleInput('+') },
-    { label: '=', action: calculate, variant: 'primary' as const },
+    { label: '=', action: calculate, variant: 'neon' as const },
   ];
 
   return (
@@ -178,9 +185,7 @@ export const ScientificCalculator: React.FC = () => {
       
       {result && !error && (
         <div className="flex justify-end">
-          <Button variant="outline" onClick={() => navigator.clipboard.writeText(result)}>
-            <Copy size={16} /> Copy Answer
-          </Button>
+          <CopyButton variant="outline" text={result} />
         </div>
       )}
     </div>

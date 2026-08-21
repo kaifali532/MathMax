@@ -76,10 +76,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
                 setSidebarOpen(false);
               }}
               className={cn(
-                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group duration-200",
                 currentPage === item.id 
-                  ? "bg-indigo-50 text-indigo-700 font-semibold dark:bg-indigo-900/30 dark:text-indigo-400" 
-                  : "text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+                  ? "bg-indigo-50 text-indigo-700 font-semibold dark:bg-indigo-900/30 dark:text-indigo-400 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-indigo-100 dark:border-indigo-800" 
+                  : "text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 hover:translate-x-1"
               )}
             >
               <item.icon size={20} className={currentPage === item.id ? "" : "opacity-70"} />
@@ -95,10 +95,10 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
                 setSidebarOpen(false);
               }}
               className={cn(
-                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+                "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group duration-200",
                 currentPage === item.id 
-                  ? "bg-indigo-50 text-indigo-700 font-semibold dark:bg-indigo-900/30 dark:text-indigo-400" 
-                  : "text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100"
+                  ? "bg-indigo-50 text-indigo-700 font-semibold dark:bg-indigo-900/30 dark:text-indigo-400 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-indigo-100 dark:border-indigo-800" 
+                  : "text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 hover:translate-x-1"
               )}
             >
               <item.icon size={20} className={currentPage === item.id ? "" : "opacity-70"} />

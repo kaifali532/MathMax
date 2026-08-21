@@ -76,7 +76,7 @@ export const Formulas: React.FC = () => {
               <h2 className="text-xl font-bold border-b border-gray-200 dark:border-gray-700 pb-2 text-gray-900 dark:text-gray-100">{category}</h2>
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
                 {items.map((item, i) => (
-                  <Card key={i} className="p-5 flex flex-col h-full hover:border-indigo-200 dark:hover:border-indigo-900/50 transition-colors">
+                  <Card key={i} className="p-5 flex flex-col h-full hover:border-indigo-200 dark:hover:border-indigo-900/50 transition-colors card-3d">
                     <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">{item.name}</h3>
                     <div className="flex-1 flex items-center justify-center py-6 overflow-x-auto text-lg text-indigo-600 dark:text-indigo-400">
                       <MathDisplay math={item.formula} />

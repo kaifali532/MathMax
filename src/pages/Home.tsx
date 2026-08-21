@@ -31,7 +31,7 @@ export const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNav
         {tools.map((tool) => (
           <Card 
             key={tool.id}
-            className="p-1 cursor-pointer group hover:border-gray-300 dark:hover:border-gray-600 transition-all hover:shadow-lg"
+            className="p-1 cursor-pointer group hover:border-gray-300 dark:hover:border-gray-600 transition-all hover:shadow-lg card-3d"
             onClick={() => onNavigate(tool.id as PageType)}
           >
             <div className="p-5 flex flex-col h-full bg-white dark:bg-gray-800 rounded-2xl group-hover:bg-gray-50 dark:group-hover:bg-gray-700/50 transition-colors">

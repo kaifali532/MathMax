@@ -132,7 +132,7 @@ export const Statistics: React.FC = () => {
               placeholder="12, 15, 18, 20..."
               onKeyDown={(e) => e.key === 'Enter' && handleCalculate()}
             />
-            <Button onClick={handleCalculate} className="shadow-md shadow-indigo-200 dark:shadow-none">Calculate</Button>
+            <Button onClick={handleCalculate} variant="neon">Calculate</Button>
           </div>
         </div>
         {error && <div className="text-red-500 text-sm font-medium bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}

@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Card, Button, Input } from '../components/ui';
+import { Card, Button, Input, CopyButton } from '../components/ui';
 import { MathDisplay } from '../components/MathDisplay';
 import { useAppContext } from '../context/AppContext';
-import { Copy } from 'lucide-react';
 import { cn } from '../lib/utils';
 import nerdamer from 'nerdamer';
 import 'nerdamer/Algebra';
@@ -50,9 +49,12 @@ export const PolynomialSolver: React.FC = () => {
         const sol = (nerdamer as any).solveEquations(eq, 'x');
         if (Array.isArray(sol)) {
           res = sol.map(s => nerdamer(s).text()).join(', ');
+          
+          const hasComplex = res.includes('i');
+          
           steps.push(`Set the equation to solve for x:`);
           steps.push(nerdamer(eq).toTeX());
-          steps.push(`The roots are:`);
+          steps.push(hasComplex ? `The roots are (Complex roots):` : `The roots are:`);
           steps.push(`x = ${sol.map(s => nerdamer(s).toTeX()).join(', ')}`);
         } else {
           res = sol.toString();
@@ -62,7 +64,7 @@ export const PolynomialSolver: React.FC = () => {
       setSolution({ answer: res, steps });
       addToHistory({ problem: `${action}: ${expression}`, answer: res, module: 'polynomial' });
     } catch (err) {
-      setError('Invalid polynomial expression.');
+      setError('Unable to read polynomial. Example: x^2 - 5x + 6');
       setSolution(null);
     }
   };
@@ -109,7 +111,7 @@ export const PolynomialSolver: React.FC = () => {
               className="text-xl font-mono text-gray-900 dark:text-gray-100 bg-transparent border-none w-full focus:ring-0 p-0 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none"
             />
           </div>
-          <Button onClick={handleCalculate} className="py-4 px-6 rounded-xl shadow-md shadow-indigo-200 dark:shadow-none bg-indigo-600 hover:bg-indigo-700 text-white font-bold">Calculate</Button>
+          <Button onClick={handleCalculate} variant="neon" className="py-4 px-6 rounded-xl">Calculate</Button>
         </div>
         {error && <div className="text-red-500 text-sm font-medium bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
       </Card>
@@ -120,6 +122,7 @@ export const PolynomialSolver: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Final Result</h3>
+                <CopyButton variant="ghost" className="text-indigo-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.answer} />
               </div>
               <div className="text-4xl font-serif text-indigo-900 dark:text-indigo-400 flex items-baseline gap-2 mb-4 overflow-x-auto pb-2">
                 <MathDisplay math={action === 'solve' ? (solution.answer.includes(',') ? `x = \\text{${solution.answer}}` : `x = ${nerdamer(solution.answer).toTeX()}`) : nerdamer(solution.answer).toTeX()} />

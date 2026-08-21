@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Card, Button, Input } from '../components/ui';
+import { Card, Button, Input, CopyButton } from '../components/ui';
 import { MathDisplay } from '../components/MathDisplay';
 import { useAppContext } from '../context/AppContext';
-import { Copy } from 'lucide-react';
 import nerdamer from 'nerdamer';
 import 'nerdamer/Algebra';
 import 'nerdamer/Calculus';
@@ -51,7 +50,7 @@ export const AlgebraSolver: React.FC = () => {
       setSolution({ answer: ans, steps });
       addToHistory({ problem: expression, answer: ans, module: 'algebra' });
     } catch (err: any) {
-      setError('Could not solve the expression. Please check your equation.');
+      setError('Invalid mathematical expression. Please check your input.');
       setSolution(null);
     }
   };
@@ -75,7 +74,7 @@ export const AlgebraSolver: React.FC = () => {
             className="text-2xl font-mono text-gray-900 dark:text-gray-100 bg-transparent border-none w-full focus:ring-0 p-0 placeholder-gray-300 dark:placeholder-gray-600 focus:outline-none"
           />
         </div>
-        <Button onClick={handleSolve} className="mr-1 py-6 px-8 rounded-xl shadow-md shadow-indigo-200 dark:shadow-none">Solve Now</Button>
+        <Button onClick={handleSolve} variant="neon" className="mr-1 py-6 px-8 rounded-xl">Solve Now</Button>
       </Card>
       
       {error && <div className="text-red-500 text-sm font-medium bg-red-50 dark:bg-red-900/20 p-3 rounded-lg">{error}</div>}
@@ -86,12 +85,7 @@ export const AlgebraSolver: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Final Solution</h3>
-                <button 
-                  onClick={() => navigator.clipboard.writeText(solution.answer)}
-                  className="text-indigo-600 text-xs font-semibold hover:underline flex items-center gap-1"
-                >
-                  <Copy size={12} /> Copy Result
-                </button>
+                <CopyButton variant="ghost" className="text-indigo-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.answer} />
               </div>
               <div className="text-4xl font-serif text-indigo-900 dark:text-indigo-400 flex items-baseline gap-2 mb-4 overflow-x-auto pb-2">
                 <MathDisplay math={solution.answer.includes(',') ? `x = \\text{${solution.answer}}` : (expression.includes('=') ? `x = ${nerdamer(solution.answer).toTeX()}` : nerdamer(solution.answer).toTeX())} />
