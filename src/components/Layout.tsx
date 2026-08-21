@@ -37,7 +37,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
       {/* Mobile Header */}
       <header className="md:hidden flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-20">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold italic shadow-sm">M</div>
+          <div className="w-8 h-8 bg-zinc-600 rounded-lg flex items-center justify-center text-white font-bold italic shadow-sm">M</div>
           <span className="font-semibold text-lg">MathStudio</span>
         </div>
         <button onClick={() => setSidebarOpen(!sidebarOpen)} className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700">
@@ -60,7 +60,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
       )}>
         <div className="p-6 hidden md:flex flex-col">
           <div className="flex items-center gap-2 mb-1">
-            <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold italic text-lg shadow-sm">M</div>
+            <div className="w-8 h-8 bg-zinc-600 rounded-lg flex items-center justify-center text-white font-bold italic text-lg shadow-sm">M</div>
             <h1 className="font-bold text-xl tracking-tight text-gray-900 dark:text-white">MathStudio</h1>
           </div>
           <p className="text-[10px] text-gray-400 font-medium uppercase tracking-widest leading-none">Student Toolkit</p>
@@ -78,7 +78,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group duration-200",
                 currentPage === item.id 
-                  ? "bg-indigo-50 text-indigo-700 font-semibold dark:bg-indigo-900/30 dark:text-indigo-400 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-indigo-100 dark:border-indigo-800" 
+                  ? "bg-zinc-50 text-zinc-700 font-semibold dark:bg-zinc-900/30 dark:text-zinc-400 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-zinc-100 dark:border-zinc-800" 
                   : "text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 hover:translate-x-1"
               )}
             >
@@ -97,7 +97,7 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
               className={cn(
                 "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-all group duration-200",
                 currentPage === item.id 
-                  ? "bg-indigo-50 text-indigo-700 font-semibold dark:bg-indigo-900/30 dark:text-indigo-400 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-indigo-100 dark:border-indigo-800" 
+                  ? "bg-zinc-50 text-zinc-700 font-semibold dark:bg-zinc-900/30 dark:text-zinc-400 shadow-[inset_0_2px_4px_rgba(0,0,0,0.05)] border border-zinc-100 dark:border-zinc-800" 
                   : "text-gray-600 dark:text-gray-400 font-medium hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100 hover:translate-x-1"
               )}
             >
@@ -120,10 +120,13 @@ export const Layout: React.FC<LayoutProps> = ({ children, currentPage, onNavigat
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto pb-20 md:pb-0">
-        <div className="flex-1 max-w-6xl mx-auto w-full p-4 md:p-8">
+      <main className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto">
+        <div className="flex-1 max-w-6xl mx-auto w-full p-4 md:p-8 pb-12">
           {children}
         </div>
+        <footer className="py-6 text-center text-sm font-medium text-gray-500 dark:text-gray-400 border-t border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50">
+          Made by Md Janib Ali
+        </footer>
       </main>
       
       {/* Mobile Bottom Navigation (Optional, keeping simple with sidebar for now as requested, but sidebar acts as hamburger menu) */}

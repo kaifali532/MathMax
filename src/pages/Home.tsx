@@ -8,9 +8,9 @@ export const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNav
   const { history } = useAppContext();
   
   const tools = [
-    { id: 'calculator', name: 'Scientific Calculator', desc: 'Perform advanced mathematical calculations.', icon: Calculator, color: 'bg-blue-500' },
+    { id: 'calculator', name: 'Scientific Calculator', desc: 'Perform advanced mathematical calculations.', icon: Calculator, color: 'bg-zinc-700' },
     { id: 'polynomial', name: 'Polynomial Solver', desc: 'Factor, expand, simplify and solve polynomial equations.', icon: FunctionSquare, color: 'bg-purple-500' },
-    { id: 'quadratic', name: 'Quadratic Solver', desc: 'Solve quadratic equations step by step.', icon: FunctionSquare, color: 'bg-indigo-500' },
+    { id: 'quadratic', name: 'Quadratic Solver', desc: 'Solve quadratic equations step by step.', icon: FunctionSquare, color: 'bg-zinc-500' },
     { id: 'angles', name: 'Angles & Trigonometry', desc: 'Solve triangles, angles and trigonometric problems.', icon: Triangle, color: 'bg-emerald-500' },
     { id: 'statistics', name: 'Statistics', desc: 'Calculate statistical measures and generate charts.', icon: BarChart2, color: 'bg-amber-500' },
     { id: 'graphing', name: 'Graphing Calculator', desc: 'Plot equations and visualize mathematical functions.', icon: LineChart, color: 'bg-rose-500' },
@@ -39,8 +39,8 @@ export const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNav
                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-white shadow-sm ${tool.color}`}>
                   <tool.icon size={24} />
                 </div>
-                <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:bg-indigo-50 dark:group-hover:bg-indigo-900 group-hover:border-indigo-200 dark:group-hover:border-indigo-700 transition-colors">
-                  <ChevronRight size={18} className="text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400" />
+                <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 flex items-center justify-center group-hover:bg-zinc-50 dark:group-hover:bg-zinc-900 group-hover:border-zinc-200 dark:group-hover:border-zinc-700 transition-colors">
+                  <ChevronRight size={18} className="text-gray-400 group-hover:text-zinc-600 dark:group-hover:text-zinc-400" />
                 </div>
               </div>
               <h3 className="font-semibold text-lg mb-1 text-gray-900 dark:text-gray-100">{tool.name}</h3>
@@ -58,7 +58,7 @@ export const Home: React.FC<{ onNavigate: (page: PageType) => void }> = ({ onNav
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {history.slice(0, 4).map((item) => (
               <Card key={item.id} className="p-4 flex flex-col gap-2 hover:bg-gray-50 dark:hover:bg-gray-800/80 cursor-pointer transition-colors" onClick={() => onNavigate(item.module as PageType)}>
-                <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-wider">{item.module}</span>
+                <span className="text-xs font-bold text-zinc-600 dark:text-zinc-400 uppercase tracking-wider">{item.module}</span>
                 <div className="font-medium truncate text-gray-900 dark:text-gray-100">{item.problem}</div>
                 <div className="text-sm text-gray-500 truncate mt-auto">Answer: {item.answer}</div>
               </Card>

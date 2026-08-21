@@ -28,15 +28,26 @@ export const AnglesTrig: React.FC = () => {
       const toRad = (deg: number) => deg * Math.PI / 180;
       const toDeg = (rad: number) => rad * 180 / Math.PI;
 
+      // Validate inputs
+      if ([sa, sb, sc, aA, aB].some(v => v < 0)) {
+        throw new Error("Lengths and angles must be positive numbers.");
+      }
+
+      // Check if provided angles sum > 90 (since it's a right triangle)
+      if (aA > 0 && aB > 0 && (aA + aB !== 90)) {
+        throw new Error(`In a right triangle, angles A and B must sum to 90°. You provided A=${aA}°, B=${aB}° (Sum = ${aA + aB}°).`);
+      }
+      if (aA >= 90 || aB >= 90) {
+        throw new Error("Angles A and B must be strictly less than 90° in a right triangle.");
+      }
+
       let knownCount = [sa, sb, sc, aA, aB].filter(v => v > 0).length;
       if (knownCount < 2) {
-        setError('Not enough information. Enter at least two appropriate triangle measurements.');
-        return;
+        throw new Error('Not enough information. Enter at least two measurements.');
       }
       
       if (aA && aB && !sa && !sb && !sc) {
-        setError('Cannot solve with only angles. Need at least one side.');
-        return;
+        throw new Error('Cannot solve with only angles. Need at least one side.');
       }
 
       // 1. Find angles if one is known
@@ -108,6 +119,16 @@ export const AnglesTrig: React.FC = () => {
 
       if (!a || !b || !c || !A || !B) {
         throw new Error("Could not solve with given inputs.");
+      }
+
+      // Validate final triangle rules
+      if (a <= 0 || b <= 0 || c <= 0) {
+        throw new Error('Invalid triangle: all sides must be positive.');
+      }
+      // Tolerance for floating point
+      const tol = 1e-7;
+      if (a + b <= c - tol || a + c <= b - tol || b + c <= a - tol) {
+        throw new Error('Invalid triangle: sides do not satisfy the triangle inequality (a + b > c).');
       }
 
       const area = 0.5 * a * b;
@@ -183,7 +204,7 @@ export const AnglesTrig: React.FC = () => {
               </div>
               <div className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
                 <span className="text-gray-500">Angle A:</span> 
-                <span className="font-medium text-indigo-600 dark:text-indigo-400">{solution.A.toFixed(2)}°</span>
+                <span className="font-medium text-zinc-600 dark:text-zinc-400">{solution.A.toFixed(2)}°</span>
               </div>
               <div className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
                 <span className="text-gray-500">Side b:</span> 
@@ -191,7 +212,7 @@ export const AnglesTrig: React.FC = () => {
               </div>
               <div className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
                 <span className="text-gray-500">Angle B:</span> 
-                <span className="font-medium text-indigo-600 dark:text-indigo-400">{solution.B.toFixed(2)}°</span>
+                <span className="font-medium text-zinc-600 dark:text-zinc-400">{solution.B.toFixed(2)}°</span>
               </div>
               <div className="flex justify-between border-b border-gray-100 dark:border-gray-800 py-1">
                 <span className="text-gray-500">Side c (hyp):</span> 
@@ -216,7 +237,7 @@ export const AnglesTrig: React.FC = () => {
               <div className="space-y-3">
                 {solution.steps.map((step, i) => (
                   <div key={i} className="flex gap-3 items-start">
-                    <div className="w-5 h-5 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-900/50 dark:text-indigo-400 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
+                    <div className="w-5 h-5 rounded-full bg-zinc-50 text-zinc-700 dark:bg-zinc-900/50 dark:text-zinc-400 flex items-center justify-center text-[10px] font-bold shrink-0 mt-0.5">
                       {i + 1}
                     </div>
                     <div className="flex-1 overflow-x-auto text-sm text-gray-800 dark:text-gray-200">

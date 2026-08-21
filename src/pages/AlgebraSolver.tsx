@@ -29,15 +29,68 @@ export const AlgebraSolver: React.FC = () => {
       if (expr.includes('=')) {
         // Solve equation
         const parts = expr.split('=');
-        // try to solve for 'x'
-        const solutions = (nerdamer as any).solveEquations(expr, 'x');
-        if (Array.isArray(solutions)) {
-          ans = solutions.map(s => nerdamer(s).text()).join(', ');
-          steps.push(`Solve for x:`);
-          steps.push(`x = ${solutions.map(s => nerdamer(s).toTeX()).join(', ')}`);
+        if (parts.length !== 2) throw new Error("Invalid equation");
+        
+        const diff = nerdamer(`expand((${parts[0]}) - (${parts[1]}))`);
+        if (diff.variables().length === 0) {
+          if (diff.eq(0)) {
+            ans = 'Infinitely many solutions';
+            steps.push(`The equation simplifies to 0 = 0`);
+            steps.push(`Result: Infinitely many solutions`);
+          } else {
+            ans = 'No solution';
+            steps.push(`The equation simplifies to a contradiction (${diff.text()} = 0)`);
+            steps.push(`Result: No solution`);
+          }
         } else {
-          ans = solutions.toString();
-          steps.push(`x = ${nerdamer(solutions).toTeX()}`);
+          // Identify the variable
+          const vars = diff.variables();
+          const solveVar = vars.includes('x') ? 'x' : vars[0];
+          
+          let solutions;
+          try {
+            solutions = (nerdamer as any).solveEquations(expr, solveVar);
+          } catch(e) {
+            solutions = nerdamer(`solve(${expr}, ${solveVar})`);
+          }
+          
+          if (Array.isArray(solutions)) {
+            ans = solutions.map(s => nerdamer(s).text()).join(', ');
+            steps.push(`Solve for ${solveVar}:`);
+            steps.push(`${solveVar} = ${solutions.map(s => nerdamer(s).toTeX()).join(', ')}`);
+          } else {
+            const solText = solutions.text();
+            // Handle returned array string from solve
+            if (solText.startsWith('[') && solText.endsWith(']')) {
+              const solArray = solText.slice(1, -1).split(',');
+              ans = solArray.map((s: string) => nerdamer(s).text()).join(', ');
+              steps.push(`Solve for ${solveVar}:`);
+              steps.push(`${solveVar} = ${solArray.map((s: string) => nerdamer(s).toTeX()).join(', ')}`);
+            } else {
+              ans = solutions.toString();
+              steps.push(`${solveVar} = ${nerdamer(solutions).toTeX()}`);
+            }
+          }
+          
+          // Verify
+          steps.push(`Verification:`);
+          try {
+             // For single solutions we can easily verify
+             if (!ans.includes(',')) {
+                const verifiedLhs = nerdamer(parts[0], { [solveVar]: ans }).evaluate().text();
+                const verifiedRhs = nerdamer(parts[1], { [solveVar]: ans }).evaluate().text();
+                if (nerdamer(verifiedLhs).eq(nerdamer(verifiedRhs))) {
+                   steps.push(`Substitute ${solveVar} = ${ans} back into the equation:`);
+                   steps.push(`${verifiedLhs} = ${verifiedRhs} \\text{ ✓}`);
+                } else {
+                   steps.push(`Unable to verify solution.`);
+                }
+             } else {
+                steps.push(`Multiple solutions found. Verification left as an exercise.`);
+             }
+          } catch(e) {
+             steps.push(`Unable to verify solution.`);
+          }
         }
       } else {
         // Just evaluate/simplify
@@ -62,9 +115,9 @@ export const AlgebraSolver: React.FC = () => {
         <p className="text-gray-500">Solve equations and simplify expressions.</p>
       </div>
 
-      <Card className="p-1 flex items-center focus-within:ring-2 focus-within:ring-indigo-500 transition-all">
+      <Card className="p-1 flex items-center focus-within:ring-2 focus-within:ring-zinc-500 transition-all">
         <div className="px-6 py-4 flex-1">
-          <div className="text-xs font-bold text-indigo-600 uppercase mb-1 tracking-widest">Input Expression</div>
+          <div className="text-xs font-bold text-zinc-600 uppercase mb-1 tracking-widest">Input Expression</div>
           <input 
             type="text"
             value={expression}
@@ -85,10 +138,10 @@ export const AlgebraSolver: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Final Solution</h3>
-                <CopyButton variant="ghost" className="text-indigo-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.answer} />
+                <CopyButton variant="ghost" className="text-zinc-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.answer} />
               </div>
-              <div className="text-4xl font-serif text-indigo-900 dark:text-indigo-400 flex items-baseline gap-2 mb-4 overflow-x-auto pb-2">
-                <MathDisplay math={solution.answer.includes(',') ? `x = \\text{${solution.answer}}` : (expression.includes('=') ? `x = ${nerdamer(solution.answer).toTeX()}` : nerdamer(solution.answer).toTeX())} />
+              <div className="text-4xl font-serif text-zinc-900 dark:text-zinc-400 flex items-baseline gap-2 mb-4 overflow-x-auto pb-2">
+                <MathDisplay math={['No solution', 'Infinitely many solutions'].includes(solution.answer) ? `\\text{${solution.answer}}` : (solution.answer.includes(',') ? `x = \\text{${solution.answer}}` : (expression.includes('=') ? `x = ${nerdamer(solution.answer).toTeX()}` : nerdamer(solution.answer).toTeX()))} />
               </div>
             </Card>
 

@@ -97,7 +97,7 @@ export const PolynomialSolver: React.FC = () => {
           ))}
         </div>
         
-        <div className="bg-gray-50 dark:bg-gray-900 p-2 rounded-2xl flex items-center focus-within:ring-2 focus-within:ring-indigo-500 transition-all border border-gray-200 dark:border-gray-700">
+        <div className="bg-gray-50 dark:bg-gray-900 p-2 rounded-2xl flex items-center focus-within:ring-2 focus-within:ring-zinc-500 transition-all border border-gray-200 dark:border-gray-700">
           <div className="px-4 py-2 flex-1">
             <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">
               {action === 'solve' ? 'Enter polynomial equation' : 'Enter polynomial'}
@@ -122,9 +122,9 @@ export const PolynomialSolver: React.FC = () => {
             <Card className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Final Result</h3>
-                <CopyButton variant="ghost" className="text-indigo-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.answer} />
+                <CopyButton variant="ghost" className="text-zinc-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.answer} />
               </div>
-              <div className="text-4xl font-serif text-indigo-900 dark:text-indigo-400 flex items-baseline gap-2 mb-4 overflow-x-auto pb-2">
+              <div className="text-4xl font-serif text-zinc-900 dark:text-zinc-400 flex items-baseline gap-2 mb-4 overflow-x-auto pb-2">
                 <MathDisplay math={action === 'solve' ? (solution.answer.includes(',') ? `x = \\text{${solution.answer}}` : `x = ${nerdamer(solution.answer).toTeX()}`) : nerdamer(solution.answer).toTeX()} />
               </div>
             </Card>

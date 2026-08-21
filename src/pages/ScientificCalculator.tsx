@@ -29,13 +29,22 @@ export const ScientificCalculator: React.FC = () => {
       const res = math.evaluate(evalExpr);
       
       if (res === undefined || typeof res === 'function') return '';
+      if (res.isComplex || math.typeOf(res) === 'Complex') {
+        throw new Error('Domain error: result is complex (e.g. inverse trig out of bounds).');
+      }
+      if (Math.abs(Number(res)) > 1e15 && (expr.includes('tan') || expr.includes('/ 0'))) {
+        throw new Error('Undefined (e.g. division by zero or tan of 90 degrees)');
+      }
       if (res === Infinity || res === -Infinity || Number.isNaN(Number(res))) {
-        throw new Error('Division by zero is not allowed.');
+        throw new Error('Undefined: Division by zero');
       }
       
       // Format to avoid long decimals
       return math.format(res, { precision: 14 });
-    } catch (err) {
+    } catch (err: any) {
+      if (err.message.includes('Domain error') || err.message.includes('Undefined')) {
+        throw err;
+      }
       throw new Error('Invalid expression');
     }
   }, []);
@@ -55,11 +64,7 @@ export const ScientificCalculator: React.FC = () => {
       }
     } catch (err: any) {
       setError(true);
-      if (err.message && err.message.includes('Division by zero')) {
-        setResult('Undefined: Division by zero');
-      } else {
-        setResult('Invalid expression');
-      }
+      setResult(err.message || 'Invalid expression');
     }
   }, [expression, isRad, evaluateExpression, addToHistory]);
 
@@ -101,7 +106,7 @@ export const ScientificCalculator: React.FC = () => {
     { label: 'sin', action: () => handleInput('sin(') },
     { label: 'cos', action: () => handleInput('cos(') },
     { label: 'tan', action: () => handleInput('tan(') },
-    { label: 'DEG/RAD', action: () => setIsRad(!isRad), className: isRad ? 'text-indigo-600 font-bold' : 'text-gray-500 font-bold' },
+    { label: 'DEG/RAD', action: () => setIsRad(!isRad), className: isRad ? 'text-zinc-600 font-bold' : 'text-gray-500 font-bold' },
     { label: 'Clear', action: handleClear, className: 'text-red-500' },
     
     { label: 'sin⁻¹', action: () => handleInput('asin(') },
@@ -164,7 +169,7 @@ export const ScientificCalculator: React.FC = () => {
           <div className="text-gray-400 dark:text-gray-500 text-xl md:text-2xl min-h-[2rem] font-mono tracking-wider break-all mt-4">
             {expression || '0'}
           </div>
-          <div className={`text-4xl md:text-5xl font-bold mt-2 min-h-[3rem] font-mono tracking-tight break-all ${error ? 'text-red-500 text-2xl md:text-3xl' : 'text-indigo-900 dark:text-indigo-100'}`}>
+          <div className={`text-4xl md:text-5xl font-bold mt-2 min-h-[3rem] font-mono tracking-tight break-all ${error ? 'text-red-500 text-2xl md:text-3xl' : 'text-zinc-900 dark:text-zinc-100'}`}>
             {result ? (error ? result : `= ${result}`) : ''}
           </div>
         </div>

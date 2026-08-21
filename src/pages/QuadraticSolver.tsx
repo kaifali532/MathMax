@@ -20,7 +20,31 @@ export const QuadraticSolver: React.FC = () => {
         throw new Error('Please enter valid numbers for a, b, and c.');
       }
       if (a === 0) {
-        throw new Error('Coefficient "a" cannot be 0 for a quadratic equation.');
+        if (b === 0) {
+          if (c === 0) {
+            setSolution({ d: 0, dText: 'N/A', result: 'Infinitely many solutions', steps: ['a = 0, b = 0, c = 0', 'The equation simplifies to 0 = 0, which is always true.'] });
+            addToHistory({ problem: `${c} = 0`, answer: 'Infinitely many solutions', module: 'quadratic' });
+          } else {
+            setSolution({ d: 0, dText: 'N/A', result: 'No solution', steps: [`a = 0, b = 0, c = ${c}`, `The equation simplifies to ${c} = 0, which is a contradiction.`] });
+            addToHistory({ problem: `${c} = 0`, answer: 'No solution', module: 'quadratic' });
+          }
+          return;
+        }
+
+        // Linear equation
+        const x = -c / b;
+        setSolution({
+          d: 0,
+          dText: 'Not a quadratic equation (a = 0)',
+          result: `x = ${Number(x.toFixed(4))}`,
+          steps: [
+            `Since a = 0, this is a linear equation: ${b}x + ${c} = 0`,
+            `${b}x = ${-c}`,
+            `x = ${-c} / ${b} = ${Number(x.toFixed(4))}`
+          ]
+        });
+        addToHistory({ problem: `${b}x + ${c} = 0`, answer: `x = ${Number(x.toFixed(4))}`, module: 'quadratic' });
+        return;
       }
 
       const steps: string[] = [];
@@ -38,28 +62,28 @@ export const QuadraticSolver: React.FC = () => {
         dText = 'Two real roots (D > 0)';
         const x1 = (-b + Math.sqrt(D)) / (2 * a);
         const x2 = (-b - Math.sqrt(D)) / (2 * a);
-        result = `x = ${x1.toFixed(4)}, ${x2.toFixed(4)}`;
+        result = `x₁ = ${Number(x1.toFixed(4))}, x₂ = ${Number(x2.toFixed(4))}`;
         steps.push(`Since D > 0, there are two distinct real roots.`);
         steps.push(`x = \\frac{-b \\pm \\sqrt{D}}{2a} = \\frac{-(${b}) \\pm \\sqrt{${D}}}{2(${a})}`);
-        steps.push(`x_1 = \\frac{${-b} + ${Math.sqrt(D).toFixed(4)}}{${2*a}} = ${x1.toFixed(4)}`);
-        steps.push(`x_2 = \\frac{${-b} - ${Math.sqrt(D).toFixed(4)}}{${2*a}} = ${x2.toFixed(4)}`);
+        steps.push(`x_1 = \\frac{${-b} + ${Number(Math.sqrt(D).toFixed(4))}}{${2*a}} = ${Number(x1.toFixed(4))}`);
+        steps.push(`x_2 = \\frac{${-b} - ${Number(Math.sqrt(D).toFixed(4))}}{${2*a}} = ${Number(x2.toFixed(4))}`);
       } else if (D === 0) {
         dText = 'One repeated real root (D = 0)';
         const x = -b / (2 * a);
-        result = `x = ${x.toFixed(4)}`;
+        result = `x = ${Number(x.toFixed(4))}`;
         steps.push(`Since D = 0, there is exactly one real root.`);
-        steps.push(`x = \\frac{-b}{2a} = \\frac{-(${b})}{2(${a})} = ${x.toFixed(4)}`);
+        steps.push(`x = \\frac{-b}{2a} = \\frac{-(${b})}{2(${a})} = ${Number(x.toFixed(4))}`);
       } else {
         dText = 'Two complex roots (D < 0)';
         const real = -b / (2 * a);
         const imag = Math.sqrt(Math.abs(D)) / (2 * a);
-        const r = real === 0 ? '' : real.toFixed(4);
+        const r = real === 0 ? '' : Number(real.toFixed(4));
         const sign = imag >= 0 ? '+' : '-';
-        const i = Math.abs(imag).toFixed(4);
-        result = `x = ${r} ${sign} ${i}i, ${r} ${sign === '+' ? '-' : '+'} ${i}i`;
+        const i = Number(Math.abs(imag).toFixed(4));
+        result = `x₁ = ${r} ${sign} ${i}i, x₂ = ${r} ${sign === '+' ? '-' : '+'} ${i}i`;
         steps.push(`Since D < 0, there are two complex roots.`);
         steps.push(`x = \\frac{-b \\pm i\\sqrt{|D|}}{2a}`);
-        steps.push(`x = ${real.toFixed(4)} \\pm ${imag.toFixed(4)}i`);
+        steps.push(`x = ${Number(real.toFixed(4))} \\pm ${Number(imag.toFixed(4))}i`);
       }
 
       setSolution({ d: D, dText, result, steps });
@@ -110,9 +134,9 @@ export const QuadraticSolver: React.FC = () => {
                 <div>
                   <div className="flex items-center justify-between mb-2">
                     <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider">Result</h3>
-                    <CopyButton variant="ghost" className="text-indigo-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.result} />
+                    <CopyButton variant="ghost" className="text-zinc-600 text-xs font-semibold py-1 px-2 h-auto" text={solution.result} />
                   </div>
-                  <div className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 font-mono">
+                  <div className="text-2xl font-bold text-zinc-600 dark:text-zinc-400 font-mono">
                     {solution.result}
                   </div>
                 </div>

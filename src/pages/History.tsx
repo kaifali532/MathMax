@@ -33,7 +33,7 @@ export const History: React.FC<{ onNavigate: (page: PageType) => void }> = ({ on
             <Card key={item.id} className="p-4 flex flex-col md:flex-row gap-4 items-start md:items-center card-3d">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                   <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 uppercase tracking-wider">
+                   <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-zinc-50 dark:bg-zinc-900/30 text-zinc-700 dark:text-zinc-400 uppercase tracking-wider">
                     {item.module}
                   </span>
                   <span className="text-xs text-gray-400">

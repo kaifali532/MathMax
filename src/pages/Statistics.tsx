@@ -35,14 +35,17 @@ export const Statistics: React.FC = () => {
   const handleCalculate = () => {
     try {
       setError('');
-      const parsed = input.split(',').map(s => s.trim()).filter(s => s !== '').map(Number);
+      const rawValues = input.split(/[\s,]+/).filter(s => s !== '');
+      const parsed = rawValues.map(Number);
       if (parsed.some(isNaN)) {
-        throw new Error('All values must be valid numbers.');
+        throw new Error('Invalid data. Please enter numbers only.');
       }
       if (parsed.length === 0) {
         throw new Error('Enter at least one number.');
       }
-      setData(parsed.sort((a, b) => a - b));
+      // Sort a copy of the dataset
+      const sorted = [...parsed].sort((a, b) => a - b);
+      setData(sorted);
       
       const mean = math.mean(parsed);
       addToHistory({
@@ -154,11 +157,11 @@ export const Statistics: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Mean (μ, x̄)</span>
-                <span className="font-medium text-lg text-indigo-600 dark:text-indigo-400">{Number(stats.mean).toFixed(4)}</span>
+                <span className="font-medium text-lg text-zinc-600 dark:text-zinc-400">{Number(Number(Number(stats.mean).toFixed(4)))}</span>
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Median</span>
-                <span className="font-medium text-lg text-emerald-600 dark:text-emerald-400">{Number(stats.median).toFixed(4)}</span>
+                <span className="font-medium text-lg text-emerald-600 dark:text-emerald-400">{Number(Number(Number(stats.median).toFixed(4)))}</span>
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Mode</span>
@@ -181,34 +184,34 @@ export const Statistics: React.FC = () => {
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Q1 (25th)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.q1).toFixed(2)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(Number(stats.q1).toFixed(4))}</span>
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Q3 (75th)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.q3).toFixed(2)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(Number(stats.q3).toFixed(4))}</span>
               </div>
               <div className="space-y-1 col-span-2">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">IQR (Interquartile Range)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{stats.iqr.toFixed(2)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.iqr.toFixed(4))}</span>
               </div>
 
               <div className="col-span-2 border-t border-gray-100 dark:border-gray-800 my-2"></div>
 
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Pop. Variance (σ²)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.popVar).toFixed(4)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(Number(stats.popVar).toFixed(4))}</span>
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Sample Variance (s²)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.samVar).toFixed(4)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(Number(stats.samVar).toFixed(4))}</span>
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Pop. Std Dev (σ)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.popStd).toFixed(4)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(Number(stats.popStd).toFixed(4))}</span>
               </div>
               <div className="space-y-1">
                 <span className="text-gray-500 block text-xs uppercase tracking-wider">Sample Std Dev (s)</span>
-                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(stats.samStd).toFixed(4)}</span>
+                <span className="font-medium text-base text-gray-900 dark:text-gray-100">{Number(Number(stats.samStd).toFixed(4))}</span>
               </div>
             </div>
           </Card>
